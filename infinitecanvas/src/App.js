@@ -13,8 +13,6 @@ function App() {
     <Screen>
       {!user && <Modal setUser={setUser} user={user} /> }
       <Canvas />
-      <Palette />
-      <AdminButtonArea />
       {user && <Palette />}
       {user && <AdminButtonArea />}
     </Screen>

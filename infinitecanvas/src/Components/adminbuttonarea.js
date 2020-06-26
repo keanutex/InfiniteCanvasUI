@@ -7,7 +7,23 @@ function AdminButtonArea() {
     const [isExpanded, setExpanded] = useState(false);
     const [isHidden, setIsHidden] = useState(true);
 
-    const allUsers = ["bob", "mike", "john", "kevin"]
+    const allUsers = 
+        ["bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",
+        "bob", "mike", "john", "kevin",]
 
     function renderList() {
         setIsClicked(!isClicked)

@@ -88,11 +88,17 @@ export const PaletteArea = styled.div`
     border: 1px solid #2b79d9;
     position: absolute;
     bottom: 0;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     z-index: 1;
     background-color: white;
     padding: 10px 30px;
     border-radius: 15px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
 
     & > h3 {
         color: #2b79d9;
@@ -129,6 +135,12 @@ export const AdminArea = styled.div`
     width: ${props => (props.isExpanded ? "20%" : "2rem")};
     height: ${props => (props.isExpanded ? "50rem" : "2rem")};
     overflow: hidden;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
 
     & > button {
         color: #2b79d9;
@@ -147,7 +159,20 @@ export const AdminArea = styled.div`
     }
 
     & > div::-webkit-scrollbar {
-        display: none;
+        background: #f1f1f1;
+        width: 10px;
+    }
+
+    & > div::-webkit-scrollbar-track {
+        width: 5px;
+    }
+
+    & > div::-webkit-scrollbar-thumb {
+        background: #2b79d9;
+    }
+
+    & > div::-webkit-scrollbar-thumb:hover {
+        background: #0755b5;
     }
 `;
 
@@ -156,18 +181,29 @@ export const UserLine = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     padding-bottom: 5px;
     height: 2rem;
+    padding-right: 5px;
 
     & > button {
         background-color: white;
         color: #2b79d9;
         border: solid 1px #2b79d9;
-        width: 20%;
+        width: 3rem;
+        border-radius: 5px;
     }
 
     & > p {
         color: #2b79d9
+    }
+`;
+
+export const ConfirmButtons = styled.div`
+    & > button {
+        background-color: white;
+        color: #2b79d9;
+        border: solid 1px #2b79d9;
+        width: 3rem;
+        border-radius: 5px;
     }
 `;

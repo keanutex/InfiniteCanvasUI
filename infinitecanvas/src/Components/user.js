@@ -1,22 +1,19 @@
-import React from 'react';
-import {UserLine} from './Styled-Components/styled-components';
+import React, {useState} from 'react';
+import BanLine from './banline';
+import ConfirmLine from './confirmline';
 
 function User(props) {
+    const [showConfirm, setShowConfirm] = useState(false);
 
     function banUser() {
         console.log(props.name + " has been banned");
     }
 
-    return (
-        <UserLine>
-            <p>{props.name}</p>
-            <button onClick={() => {
-                if (window.confirm("Ban " + props.name + "?")) {
-                    banUser()
-                }
-                }}>Ban</button>
-        </UserLine>
-    )
+    if (showConfirm) {
+        return <ConfirmLine name={props.name} banUser={banUser} showConfirm={setShowConfirm}/>
+    } else {
+        return <BanLine name={props.name} showConfirm={setShowConfirm}/>
+    }
 }
 
 export default User;
