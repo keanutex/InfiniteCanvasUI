@@ -86,6 +86,7 @@ class Authentication extends React.Component {
 
             </div>
         else if (this.state.authLevel == 1)
+        //must handle where to redirect action
             return <div>
                 {
 
@@ -97,10 +98,11 @@ class Authentication extends React.Component {
 
             </div>
         else if (this.state.authLevel == 2)
+        //must handle where to redirect action
             return <div>
                 {
                     <Form>
-                        <h1 type="text" style={{textAlign: 'center'}}> Great to have you join us,{this.state.username}</h1>
+                        <h1 type="text" style={{textAlign: 'center'}}> Great to have you join us, {this.state.username}</h1>
                         <Button type="button" onClick={this.handleSubmitLogin}>Continue</Button>
                     </Form>
                 }
