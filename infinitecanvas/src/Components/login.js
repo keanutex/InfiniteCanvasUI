@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Form, Input, Button, Buttons} from './Styled-Components/styled-components';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Form, Input, Button, Buttons } from './Styled-Components/styled-components';
 
 function Login(props) {
     const [formData, setFormData] = useState({});
-
+    const [showErr, setshowErr] = useState(false);
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -11,24 +12,61 @@ function Login(props) {
         });
     };
 
-    const handleSubmitLogin = (e) => {
+    const handleSubmitLogin = async (e) => {
         e.preventDefault();
         // here is where you would login the user
-        console.log(formData);
-        props.setUser(formData.username);
+        await axios.post('http://127.0.0.1:3000/users/signin',
+            {
+                username: formData.username,
+                password: formData.password
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+                }
+            }
+        ).then(response => {
+            if (response.status == 200) {
+                props.setUser(formData.password);
+                props.setUser(formData.username);
+            }
+            else {
+                this.setState({ authLevel: 0 }).catch(error => {
+                });
+            };
+        }).catch(error => {
+            setshowErr(true);
+        });
     };
 
-    const handleSubmitRegister = (e) => {
+    const handleSubmitRegister = async (e) => {
         e.preventDefault();
-        // here is where you would register the user
-        console.log(formData);
-        props.setUser(formData.username);
+        await axios.post('http://127.0.0.1:3000/users/register',
+            formData,
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+                }
+            }).then(response => {
+                props.setUser(formData.password);
+                props.setUser(formData.username);
+                props.setUser(formData.email);
+            }).catch(error => {
+                setshowErr(true);
+
+            });
+
     };
 
     return (
+        
         <Form>
-            <Input type="text" name="username" onChange={handleChange} placeholder="Username"/>
-            <Input type="password" name="password" onChange={handleChange} placeholder="Password"/>
+            <Input type="text" name="username" onChange={handleChange} placeholder="Username" />
+            <Input type="password" name="password" onChange={handleChange} placeholder="Password" />
+            <Input type="email" name="email" onChange={handleChange} placeholder="Email" />
+            {showErr && <p>Incorrect Username or Password, please try again...</p>}
             <Buttons>
                 <Button type="button" onClick={handleSubmitLogin}>Login</Button>
                 <p> or </p>
