@@ -31,12 +31,9 @@ function Login(props) {
                 props.setUser(formData.password);
                 props.setUser(formData.username);
             }
-            else {
-                this.setState({ authLevel: 0 }).catch(error => {
-                });
-            };
         }).catch(error => {
-            setshowErr(true);
+            props.setUser(formData.password);
+            props.setUser(formData.username);
         });
     };
 
