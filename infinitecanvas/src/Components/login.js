@@ -15,7 +15,7 @@ function Login(props) {
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
         // here is where you would login the user
-        await axios.post('http://127.0.0.1:3000/users/signin',
+        await axios.post('http://127.0.0.1:3000/account/signin',
             {
                 username: formData.username,
                 password: formData.password
@@ -32,14 +32,13 @@ function Login(props) {
                 props.setUser(formData.username);
             }
         }).catch(error => {
-            props.setUser(formData.password);
-            props.setUser(formData.username);
+            setshowErr(true);
         });
     };
 
     const handleSubmitRegister = async (e) => {
         e.preventDefault();
-        await axios.post('http://127.0.0.1:3000/users/register',
+        await axios.post('http://127.0.0.1:3000/account/register',
             formData,
             {
                 headers: {
