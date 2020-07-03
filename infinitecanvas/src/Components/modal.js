@@ -8,7 +8,7 @@ function Modal(props) {
         return (
             <LoginModal>
                 <h3>Welcome to Inifinite Canvas</h3>
-                <Login setUser={props.setUser} />
+                <Login setUser={props.setUser} setUserData={props.setUserData}/>
                 <p>Created by some poor souls</p>
             </LoginModal>
         )

@@ -8,13 +8,14 @@ import AdminButtonArea from './Components/adminbuttonarea';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({ userId: null, typeId: null, statusId: null });
 
   return (
     <Screen>
-      {!user && <Modal setUser={setUser} user={user} /> }
+      {!user && <Modal setUser={setUser} user={user} userData={userData} setUserData={setUserData} /> }
       <Canvas />
       {user && <Palette />}
-      {user && <AdminButtonArea />}
+      {(userData.typeId===2) && <AdminButtonArea />}
     </Screen>
   );
 }

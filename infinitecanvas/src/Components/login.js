@@ -27,9 +27,13 @@ function Login(props) {
                 }
             }
         ).then(response => {
-            if (response.status == 200) {
-                props.setUser(formData.password);
+            if (response.status === 200) {
+                //props.setUser(formData.password);
                 props.setUser(formData.username);
+                props.setUserData({userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId})
+
+            
+                //console.log(response)
             }
         }).catch(error => {
             setshowErr(true);
@@ -46,9 +50,8 @@ function Login(props) {
                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
                 }
             }).then(response => {
-                props.setUser(formData.password);
                 props.setUser(formData.username);
-                props.setUser(formData.email);
+                props.setUserData({userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId})
             }).catch(error => {
                 setshowErr(true);
 
