@@ -22,6 +22,7 @@ function User(props) {
                 }
             }).then(response => {
                 setShowConfirm(false);
+                props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: props.name.typeId, statusId: 2});
             }).catch(error => {
                 setshowErr(true);
             });
@@ -41,6 +42,7 @@ function User(props) {
                 }
             }).then(response => {
                 setShowConfirm(false)
+                props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: props.name.typeId, statusId: 1});
             }).catch(error => {
                 setshowErr(true);
             });
@@ -60,6 +62,7 @@ function User(props) {
                 }
             }).then(response => {
                 setShowConfirm(false)
+                props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: 2, statusId: props.name.statusId});
             }).catch(error => {
                 setshowErr(true);
             });
@@ -79,14 +82,21 @@ function User(props) {
                 }
             }).then(response => {
                 setShowConfirm(false)
+                props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: 1, statusId: props.name.statusId});
             }).catch(error => {
                 setshowErr(true);
             });
     };
 
+    function onUpdate(value) {
+        props.useUpdate(value);
+    }
+
+   // console.log( props);
+
     if (showConfirm) {
         return <ConfirmLine name={props.name.username} banUser={banUser} unban={unBanUser} promote={promoteUser} 
-        demote={demoteUser} showConfirm={setShowConfirm} state={showState}/>
+        demote={demoteUser} showConfirm={setShowConfirm} state={showState} setUpdate={props.setUpdate} update={props.update}/>
     } else{
         return <BanLine name={props.name.username} showConfirm={setShowConfirm} 
         admin={props.name.typeId} isBanned={props.name.statusId} state={setState}/>
