@@ -10,13 +10,6 @@ function AdminButtonArea(props) {
     const [isLoading, setIsloading] = useState(true);
     let [allUserData, setAllUserData] = useState([{ userId: null, username: null, typeId: null, statusId: null }]);
     const [showErr, setshowErr] = useState(false);
-    const [update, setUpdate] = useState("");
-
-    useEffect(
-        () => {
-            
-        }, [update]
-    )
 
     function renderList() {
         setIsClicked(!isClicked)
@@ -61,9 +54,6 @@ function AdminButtonArea(props) {
         newUserData[val] = data;
 
         setAllUserData(newUserData);
-
-        console.log(newUserData);
-        console.log(allUserData[val]);
     }
 
     return (
@@ -73,7 +63,7 @@ function AdminButtonArea(props) {
             {!isHidden && !isLoading && (allUserData[0].userId !== null) &&
                     <div>
                         {allUserData.map((item, index) => (
-                            <User key={index} name={item} admin={props.userData.userId} useUpdate={useUpdate} update={index} setUser={renderList}/>
+                            <User key={index} name={item} admin={props.userData.userId} useUpdate={useUpdate} update={index}/>
                         ))}
                     </div>
                 }

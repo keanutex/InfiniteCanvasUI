@@ -96,7 +96,7 @@ function User(props) {
 
     if (showConfirm) {
         return <ConfirmLine name={props.name.username} banUser={banUser} unban={unBanUser} promote={promoteUser} 
-        demote={demoteUser} showConfirm={setShowConfirm} state={showState} setUpdate={props.setUpdate} update={props.update}/>
+        demote={demoteUser} showConfirm={setShowConfirm} state={showState} />
     } else{
         return <BanLine name={props.name.username} showConfirm={setShowConfirm} 
         admin={props.name.typeId} isBanned={props.name.statusId} state={setState}/>
