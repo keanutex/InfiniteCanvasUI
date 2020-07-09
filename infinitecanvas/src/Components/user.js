@@ -91,8 +91,6 @@ function User(props) {
         props.useUpdate(value);
     }
 
-   // console.log( props);
-
     if (showConfirm) {
         return <ConfirmLine name={props.name.username} banUser={banUser} unban={unBanUser} promote={promoteUser} 
         demote={demoteUser} showConfirm={setShowConfirm} state={showState} />

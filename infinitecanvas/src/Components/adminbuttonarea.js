@@ -57,14 +57,13 @@ function AdminButtonArea(props) {
         isExpanded={isExpanded} 
         isHidden={isHidden}>
             <button onClick={getList}>Admin</button>
-            {/* {console.log(update)} */}
             {!isHidden && !isLoading && (allUserData[0].userId !== null) &&
-                    <div>
-                        {allUserData.map((item, index) => (
-                            <User key={index} name={item} admin={props.userData.userId} useUpdate={useUpdate} update={index}/>
-                        ))}
-                    </div>
-                }
+                <div>
+                    {allUserData.map((item, index) => (
+                        <User key={index} name={item} admin={props.userData.userId} useUpdate={useUpdate} update={index}/>
+                    ))}
+                </div>
+            }
         </AdminArea>
     );
 }
