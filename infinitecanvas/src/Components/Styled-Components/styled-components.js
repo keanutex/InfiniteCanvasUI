@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 
 export const Screen = styled.div`
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #e9e9e9;
 `;
 
 export const Form = styled.form`
@@ -54,6 +60,7 @@ export const LoginModal = styled.div`
     border: 1px solid black;
     padding: 1rem;
     border-radius: 10px;
+    background-color: white;
     box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048),
     0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -68,30 +75,49 @@ export const LoginModal = styled.div`
     }
 `;
 
-export const CanvasArea = styled.canvas`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 0;
-    background: #f8f8f8;
-    padding: 0;
-    margin: 0 auto;
-    margin-bottom: 1rem;
-    display: block;
+export const CanvasFrame = styled.div`
+    height: 95%;
+    overflow: scroll;
+    border: 1px solid black;
+    overflow-x: hidden;
+    background: ${props => (props.user === null ? 'grey': '#f8f8f8')};
+
+    &::-webkit-scrollbar {
+        background: #f1f1f1;
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #2b79d9;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #0755b5;
+    }
+`;
+
+export const CanvasArea = styled.canvas`    
+    pointer-events: ${props => (props.user === null ? 'none' : 'auto')}    
 `;
 
 export const PaletteArea = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;    
     border: 1px solid #2b79d9;
     position: absolute;
-    bottom: 0;
-    margin-bottom: 40px;
+    top: 0;
+    left: 0;
+    margin-top: 30px;
+    margin-left: 30px;
     z-index: 1;
     background-color: white;
-    padding: 10px 30px;
+    padding: 15px 15px;
     border-radius: 15px;
     box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -102,18 +128,20 @@ export const PaletteArea = styled.div`
 
     & > h3 {
         color: #2b79d9;
-        margin-right: 10px;
+        user-select: none;
+        margin: 5px 5px;
     }
 `;
 
-export const Colour = styled.div`
-    width: 30px;    
-    height: 30px;
+export const ColourLabel = styled.label`
+    height: 40px;
+    width: 40px;
     background-color: ${props => props.colour};
-    border: 1px solid black;
-    margin: 5px;
-    border-radius: 15px;
-    cursor: pointer;
+    border-radius: 10px;
+`;
+
+export const ColourInput = styled.input`
+    visibility: hidden;
 `;
 
 export const AdminArea = styled.div`
@@ -125,8 +153,8 @@ export const AdminArea = styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    margin-right: 60px;
-    margin-top: 60px;
+    margin-right: 30px;
+    margin-top: 30px;
     z-index: 1;
     background-color: white;
     padding: 10px 30px;
@@ -149,6 +177,7 @@ export const AdminArea = styled.div`
         background-color: white;
         outline: none;
         width: ${props => (props.open ? "5rem" : "initial")};
+        user-select: none;
     }
 
     & > div {

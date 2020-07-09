@@ -8,12 +8,13 @@ import AdminButtonArea from './Components/adminbuttonarea';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [colour, setColour] = useState("#000000");
 
   return (
     <Screen>
       {!user && <Modal setUser={setUser} user={user} /> }
-      <Canvas />
-      {user && <Palette />}
+      <Canvas user={user} colour={colour}/>
+      {user && <Palette colour={colour} setColour={setColour}/>}
       {user && <AdminButtonArea />}
     </Screen>
   );
