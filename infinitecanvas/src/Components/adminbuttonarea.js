@@ -8,7 +8,7 @@ function AdminButtonArea(props) {
     const [isExpanded, setExpanded] = useState(false);
     const [isHidden, setIsHidden] = useState(true);
     const [isLoading, setIsloading] = useState(true);
-    const [allUserData, setAllUserData] = useState([{ userId: null, username: null, typeId: null, statusId: null }]);
+    let [allUserData, setAllUserData] = useState([{ userId: null, username: null, typeId: null, statusId: null }]);
 
     function renderList() {
         setIsClicked(!isClicked)
@@ -43,19 +43,28 @@ function AdminButtonArea(props) {
         });
     };
 
+    const useUpdate = (val, data) => {
+        const newUserData = allUserData.map(l => Object.assign({}, l));
+
+        newUserData[val] = data;
+
+        setAllUserData(newUserData);
+    }
+
     return (
         <AdminArea 
         isClicked={isClicked} 
         isExpanded={isExpanded} 
         isHidden={isHidden}>
             <button onClick={getList}>Admin</button>
+            {/* {console.log(update)} */}
             {!isHidden && !isLoading && (allUserData[0].userId !== null) &&
-                <div>
-                    {allUserData.map(item => (
-                        <User name={item} admin={props.userData.userId} />
-                    ))}
-                </div>
-            }
+                    <div>
+                        {allUserData.map((item, index) => (
+                            <User key={index} name={item} admin={props.userData.userId} useUpdate={useUpdate} update={index}/>
+                        ))}
+                    </div>
+                }
         </AdminArea>
     );
 }
