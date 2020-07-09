@@ -4,7 +4,7 @@ import {CanvasArea, CanvasFrame} from './Styled-Components/styled-components';
 
 import openSocket from "socket.io-client";
 
-const socket = openSocket("ws://localhost:3030/");
+const socket = openSocket("ws://52.151.114.80:3030/");
 
 const getCanvas = async () => {
     await axios.get('http://52.151.114.80:3000/canvas/boardState',
