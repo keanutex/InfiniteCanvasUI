@@ -1,17 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {CanvasArea} from './Styled-Components/styled-components';
+import openSocket from "socket.io-client";
+
+const socket = openSocket("ws://localhost:3030/");
 
 function Canvas() {
-    const [newPix, seNewPix] = useState('')
+    const [newPix, seNewPix] = useState(null)
 
     useEffect(() => {
         
+        socket.on("newData", data => {
+            seNewPix(data);
+        });
 
-        let eventSource = new EventSource("http://localhost:3000/canvas/getNew")
-        eventSource.onmessage = e => updatePixelData(JSON.parse(e.data))
     }, []);
 
     const updatePixelData = (data) => {
+        console.log(data)
         seNewPix(data);
     }
 
