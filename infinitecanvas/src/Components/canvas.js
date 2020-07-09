@@ -10,8 +10,8 @@ function draw(e, colour, user) {
     const ctx = canvas.getContext('2d');
     e.preventDefault();
     var rect = canvas.getBoundingClientRect();
-    var x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    var y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    var x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
+    var y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
 
     ctx.fillStyle = colour;
     ctx.fillRect(x,y,1,1);
@@ -32,7 +32,7 @@ function enableClick() {
     canvas.style["pointer-events"] = "auto";
 }
 
-const getCanvas = async () => {
+const getCanvas = async (setImageData) => {
     await axios.get('http://51.132.134.222:3000/canvas/boardState',
     {
         headers: {
@@ -55,7 +55,6 @@ const getCanvas = async () => {
         
         let imageDataFinal = new ImageData(arr, 1000, 1000);
         ctx.putImageData(imageDataFinal, 0, 0);
-        
         console.log("success");
     })
     .catch(error => {
@@ -90,7 +89,69 @@ const updateCanvas = async (x, y, colour, user) => {
     });
 }
 
+function startTimer(e, setTime, setPanning, setPosition, position) {
+    let start = new Date();
+    let startTime = start.getTime();
+    setTime(startTime);
+    setPosition({
+        ...position,
+        oldX: e.clientX,
+        oldY: e.clientY
+    })
+    setPanning(true);
+}
+
+function endTimer(time, setTime, setPanning, e, colour, user) {
+    let end = new Date();
+    let endTime = end.getTime();
+    if (endTime - time < 100) {
+        draw(e, colour, user)
+    }
+    setTime(0);
+    setPanning(false);
+}
+
+function panImage(e, isPanning, position, setPosition) {
+    if (isPanning) {        
+        let newX = e.clientX;
+        let newY = e.clientY;
+        let offsetX = newX-position.oldX;
+        let offsetY = newY-position.oldY;
+        setPosition({
+            ...position,
+            oldX: newX,
+            oldY: newY,
+            x: position.x+offsetX,
+            y: position.y+offsetY
+        });
+    }
+}
+
+function getCanvasX(e) {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext('2d');
+    let rect = canvas.getBoundingClientRect();
+    let newX = (e.clientX - rect.left) * (canvas.width / rect.width);
+    return newX;
+}
+
+function getCanvasY(e) {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext('2d');
+    let rect = canvas.getBoundingClientRect();
+    let newY = (e.clientY - rect.top) * (canvas.height / rect.height);
+    return newY;
+}
+
 function Canvas(props) {
+    const [isPanning, setPanning] = useState(false);
+    const [time, setTime] = useState(0);
+    const [position, setPosition] = useState({
+        x: 0,
+        y: 0,
+        oldX: 0,
+        oldY: 0,
+    });
     useEffect(() => {
         if (props.user === null) {
             getCanvas();
@@ -98,8 +159,17 @@ function Canvas(props) {
     });
     
     return (
-        <CanvasFrame user={props.user}>
-            <CanvasArea id="myCanvas" height='1000' width='1000' user={props.user} onClick={e => draw(e, props.colour, props.user)}></CanvasArea>
+        <CanvasFrame id="frame" user={props.user}>
+            <CanvasArea 
+            id="myCanvas" 
+            height='1000' 
+            width='1000' 
+            user={props.user}
+            position={position}
+            onMouseDown={e => startTimer(e, setTime, setPanning, setPosition, position)} 
+            onMouseUp={e => endTimer(time, setTime, setPanning, e, props.colour, props.user)}
+            onMouseMove={e => panImage(e, isPanning, position, setPosition)}>
+            </CanvasArea>
         </CanvasFrame>
     );
 }

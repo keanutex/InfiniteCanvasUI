@@ -77,31 +77,21 @@ export const LoginModal = styled.div`
 
 export const CanvasFrame = styled.div`
     height: 95%;
-    overflow: scroll;
+    width: 80%;
+    position: absolute;
     border: 1px solid black;
-    overflow-x: hidden;
-    background: ${props => (props.user === null ? 'grey': '#f8f8f8')};
-
-    &::-webkit-scrollbar {
-        background: #f1f1f1;
-        width: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-        width: 5px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: #2b79d9;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background: #0755b5;
-    }
+    overflow: hidden;
+    background: grey;
 `;
 
-export const CanvasArea = styled.canvas`    
-    pointer-events: ${props => (props.user === null ? 'none' : 'auto')}    
+export const CanvasArea = styled.canvas`
+    position: absolute;
+    height: 1000px;
+    width: 1000px;    
+    border: 1px solid black;
+    top: ${props => props.position.y}px;
+    left: ${props => props.position.x}px;
+    pointer-events: ${props => (props.user === null ? 'none' : 'auto')};
 `;
 
 export const PaletteArea = styled.div`
