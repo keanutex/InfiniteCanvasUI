@@ -25,7 +25,7 @@ function AdminButtonArea(props) {
 
     const getList = async (e) => {
         e.preventDefault();
-        await axios.post('http://localhost:3000/account/getAllUsers',
+        await axios.post('http://52.151.114.80:3000/account/getAllUsers',
         {
             userId: props.userData.userId
         },

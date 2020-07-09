@@ -7,7 +7,7 @@ import openSocket from "socket.io-client";
 const socket = openSocket("ws://localhost:3030/");
 
 const getCanvas = async () => {
-    await axios.get('http://localhost:3000/canvas/boardState',
+    await axios.get('http://52.151.114.80:3000/canvas/boardState',
     {
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -41,7 +41,7 @@ const updateCanvas = async (e, colour, user, userData) => {
     var x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
     var y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
     if (userData.typeId === 2) {
-        await axios.post('http://localhost:3000/canvas/getPixelInfo',
+        await axios.post('http://52.151.114.80:3000/canvas/getPixelInfo',
         {
             x: x+1,
             y: y+1
@@ -60,7 +60,7 @@ const updateCanvas = async (e, colour, user, userData) => {
         let g = parseInt("0x" + colour.slice(3,5));
         let b = parseInt("0x" + colour.slice(5,7));
         
-        await axios.put('http://localhost:3000/canvas/drawPixel',
+        await axios.put('http://52.151.114.80:3000/canvas/drawPixel',
         {
             x: y,
             y: x,
