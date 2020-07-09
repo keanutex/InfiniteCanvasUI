@@ -92,6 +92,10 @@ export const CanvasArea = styled.canvas`
     top: ${props => props.position.y}px;
     left: ${props => props.position.x}px;
     pointer-events: ${props => (props.user === null ? 'none' : 'auto')};
+    transform: scale(${props => props.scale});
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
 `;
 
 export const PaletteArea = styled.div`

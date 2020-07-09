@@ -127,20 +127,10 @@ function panImage(e, isPanning, position, setPosition) {
     }
 }
 
-function getCanvasX(e) {
-    const canvas = document.getElementById("myCanvas");
-    const ctx = canvas.getContext('2d');
-    let rect = canvas.getBoundingClientRect();
-    let newX = (e.clientX - rect.left) * (canvas.width / rect.width);
-    return newX;
-}
-
-function getCanvasY(e) {
-    const canvas = document.getElementById("myCanvas");
-    const ctx = canvas.getContext('2d');
-    let rect = canvas.getBoundingClientRect();
-    let newY = (e.clientY - rect.top) * (canvas.height / rect.height);
-    return newY;
+function zoom(e, scale, setScale, position, setPosition) {
+    const sign = Math.sign(e.deltaY) / 5;
+    let finalScale = scale-sign;
+    setScale(finalScale);
 }
 
 function Canvas(props) {
@@ -152,6 +142,8 @@ function Canvas(props) {
         oldX: 0,
         oldY: 0,
     });
+    const [scale, setScale] = useState(1);
+
     useEffect(() => {
         if (props.user === null) {
             getCanvas();
@@ -160,7 +152,9 @@ function Canvas(props) {
     
     return (
         <CanvasFrame id="frame" user={props.user}>
-            <CanvasArea 
+            <CanvasArea
+            onWheel={e => zoom(e, scale, setScale, position, setPosition)}
+            scale={scale}
             id="myCanvas" 
             height='1000' 
             width='1000' 
