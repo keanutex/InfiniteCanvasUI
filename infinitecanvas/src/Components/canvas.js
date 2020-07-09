@@ -2,6 +2,13 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {CanvasArea, CanvasFrame} from './Styled-Components/styled-components';
 
+import openSocket from "socket.io-client";
+
+const socket = openSocket("ws://localhost:3030/");
+
+
+    
+
 function draw(e, colour, user) {
     if (user === null) {
         return;
@@ -90,11 +97,27 @@ const updateCanvas = async (x, y, colour, user) => {
     });
 }
 
+function drawUpdate(x, y, r, g, b) {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext('2d');
+    var rect = canvas.getBoundingClientRect();
+    //var x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    //var y = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+    ctx.fillRect(x,y,1,1);
+}
+
 function Canvas(props) {
     useEffect(() => {
         if (props.user === null) {
             getCanvas();
         }
+        
+        socket.on("newData", data => {
+            console.log(data);
+            drawUpdate(data.x, data.y, data.r, data.g, data.b);
+        });
     });
     
     return (
