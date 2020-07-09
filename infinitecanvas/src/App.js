@@ -14,7 +14,7 @@ function App() {
   return (
     <Screen>
       {!user && <Modal setUser={setUser} user={user} userData={userData} setUserData={setUserData} /> }
-      <Canvas user={user} colour={colour}/>
+      <Canvas user={user} colour={colour} userData={userData}/>
       {user && <Palette colour={colour} setColour={setColour}/>}
       {(userData.typeId===2) && <AdminButtonArea setUser={setUser} user={user} userData={userData} setUserData={setUserData} />}
     </Screen>

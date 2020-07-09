@@ -11,6 +11,14 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+function validatePassword(password) {
+    var re = {
+        'capital': /[A-Z]/,
+        'digit': /[0-9]/,
+    };
+    return re.capital.test(password) && re.digit.test(password);
+}
+
 //make auth and firestore references
 const auth = firebase.auth();
 
@@ -20,7 +28,9 @@ function Login(props) {
     const [userTaken, setuserTaken] = useState(false);
     const [internalErr, setinternalErr] = useState(false);
     const [LoginErr, setLoginErr] = useState(false);
+    const [PasswordErr, setPasswordErr] = useState(false);
     const handleChange = (e) => {
+        setPasswordErr(false);
         setLoginErr(false);
         setregisterErr(false);
         setuserTaken(false);
@@ -32,47 +42,55 @@ function Login(props) {
     };
 
     const collectUsernames = async () => {
-        setuserTaken(false);
-        setLoginErr(false);
-        await axios.post('http://51.132.134.222:3000/account/users',
+        var valPassword = validatePassword(formData.password);
+        if (valPassword === true) {
+            setuserTaken(false);
+            setLoginErr(false);
+            await axios.post('http://localhost:3000/account/users',
             {
                 username: formData.username
-            },
-            {
+            },{
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
                 }
-            }
-        ).then(response => {
-            if(response.status === 200){
-                handleSubmitRegister();
-            }
-            else if(response.status === 204){
-                setuserTaken(true);
-            }
-            else{
-                console.log("user is taken");
+            }).then(response => {
+                if (response.status === 200) {
+                    var ret = handleSubmitRegister();
+                    if (ret === false) {
+                        setregisterErr(true);
+                    }
+                } else if (response.status === 204) {
+                    setuserTaken(true);
+                } else {
+                    console.log("user is taken");
+                    setinternalErr(true);
+                }
+            }).catch(error => {
                 setinternalErr(true);
-            }
-        }).catch(error => {
-            setinternalErr(true);
-            console.log(error)
-        });
-
+                console.log(error);
+            })
+        } else {
+            setPasswordErr(true);
+        }
     }
-
 
     const handleSubmitRegister = async () => {
-        auth.createUserWithEmailAndPassword(formData.email, formData.password).then(() => {
-            handleRegisterData();
-            console.log("user has registered in successfully");
+        try {
+            auth.createUserWithEmailAndPassword(formData.email, formData.password).then(() => {
+                handleRegisterData();
+                console.log("user has registered in successfully");
 
-        }).catch(error => {
+            }).catch(error => {
+                console.log(error);
+                setregisterErr(true);
+            });
+        } catch (error) {
             console.log(error);
             setregisterErr(true);
-        });
+        }
     }
+
     const handleSubmitLogin = async (e) => {
         setuserTaken(false);
         setLoginErr(false);
@@ -86,22 +104,19 @@ function Login(props) {
         });
     }
 
-
-
     const handleLoginData = async () => {
         // here is where you would login the user
-        await axios.post('http://51.132.134.222:3000/account/signin',
-            {
-                username: formData.username,
-                email: formData.email
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-                }
+        await axios.post('http://localhost:3000/account/signin',
+        {
+            username: formData.username,
+            email: formData.email
+        },
+        {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
             }
-        ).then(response => {
+        }).then(response => {
             props.setUser(formData.username);
             props.setUserData({ userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId })
         }).catch(error => {
@@ -111,23 +126,22 @@ function Login(props) {
     };
 
     const handleRegisterData = async () => {
-        await axios.post('http://51.132.134.222:3000/account/register',
-            {
-                username: formData.username,
-                email: formData.email
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-                }
-            }).then(response => {
-                props.setUser(formData.username);
-                props.setUserData({ userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId })
-            }).catch(error => {
-                console.log(error);
-
-            });
+        await axios.post('http://localhost:3000/account/register',
+        {
+            username: formData.username,
+            email: formData.email
+        },
+        {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+            }
+        }).then(response => {
+            props.setUser(formData.username);
+            props.setUserData({ userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId })
+        }).catch(error => {
+            console.log(error);
+        });
 
     };
 
@@ -137,10 +151,11 @@ function Login(props) {
             <Input type="text" name="username" onChange={handleChange} placeholder="Username" />
             <Input type="password" name="password" onChange={handleChange} placeholder="Password" />
             <Input type="email" name="email" onChange={handleChange} placeholder="Email" />
-            {userTaken && <p style={{textAlign: 'center', color:'red'}}>Username is taken, please enter a different one</p> }
-            {LoginErr && <p style={{textAlign: 'center', color:'red'}}>Incorrect Username/Password</p>}
-            {registerErr && <p style={{textAlign: 'center', color:'red'}}>Could Not Log You in, Ensure Email, Username and Password is Correct</p>}
-            {internalErr && <p style={{textAlign: 'center', color:'red'}}>Something went wrong, please try again later</p>}
+            {PasswordErr && <p style={{ textAlign: 'center', color: 'red' }}>Your Password is too weak, you need a uppercase, lowercase, a number and it needs to be at least 8 characters long </p>}
+            {userTaken && <p style={{ textAlign: 'center', color: 'red' }}>Username is taken, please enter a different one</p>}
+            {LoginErr && <p style={{ textAlign: 'center', color: 'red' }}>Incorrect Username/Password</p>}
+            {registerErr && <p style={{ textAlign: 'center', color: 'red' }}>We were not able to register you, please ensure EMAIL, USERNAME and PASSWORD fields are entered</p>}
+            {internalErr && <p style={{ textAlign: 'center', color: 'red' }}>Something went wrong, please try again later</p>}
             <Buttons>
                 <Button type="button" onClick={handleSubmitLogin}>Login</Button>
                 <p> or </p>
