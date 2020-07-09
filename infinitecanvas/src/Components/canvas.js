@@ -6,9 +6,6 @@ import openSocket from "socket.io-client";
 
 const socket = openSocket("ws://localhost:3030/");
 
-
-    
-
 function draw(e, colour, user) {
     if (user === null) {
         return;
