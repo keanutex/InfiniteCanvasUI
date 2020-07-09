@@ -203,7 +203,7 @@ export const ConfirmButtons = styled.div`
         background-color: white;
         color: #2b79d9;
         border: solid 1px #2b79d9;
-        width: 3rem;
+        width: fit-content;
         border-radius: 5px;
     }
 `;
