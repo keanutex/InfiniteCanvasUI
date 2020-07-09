@@ -23,7 +23,7 @@ function User(props) {
                 setShowConfirm(false);
                 props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: props.name.typeId, statusId: 2});
             }).catch(error => {
-                setshowErr(true);
+                console.log(error);
             });
     };
 
@@ -43,7 +43,7 @@ function User(props) {
                 setShowConfirm(false)
                 props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: props.name.typeId, statusId: 1});
             }).catch(error => {
-                setshowErr(true);
+                console.log(error);
             });
     };
 
@@ -63,7 +63,7 @@ function User(props) {
                 setShowConfirm(false)
                 props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: 2, statusId: props.name.statusId});
             }).catch(error => {
-                setshowErr(true);
+                console.log(error);
             });
     };
 
@@ -83,13 +83,9 @@ function User(props) {
                 setShowConfirm(false)
                 props.useUpdate(props.update, {userId: props.name.userId, username: props.name.username, typeId: 1, statusId: props.name.statusId});
             }).catch(error => {
-                setshowErr(true);
+                console.log(error);
             });
     };
-
-    function onUpdate(value) {
-        props.useUpdate(value);
-    }
 
     if (showConfirm) {
         return <ConfirmLine name={props.name.username} banUser={banUser} unban={unBanUser} promote={promoteUser} 

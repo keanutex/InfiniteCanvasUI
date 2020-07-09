@@ -63,7 +63,7 @@ function Login(props) {
                 } else if (response.status === 204) {
                     setuserTaken(true);
                 } else {
-                    console.log("user is taken");
+                    console.log("username is already in use");
                     setinternalErr(true);
                 }
             }).catch(error => {
@@ -79,7 +79,7 @@ function Login(props) {
         try {
             auth.createUserWithEmailAndPassword(formData.email, formData.password).then(() => {
                 handleRegisterData();
-                console.log("user has registered in successfully");
+                console.log("new user has been registered");
 
             }).catch(error => {
                 console.log(error);
@@ -96,7 +96,7 @@ function Login(props) {
         setLoginErr(false);
         auth.signInWithEmailAndPassword(formData.email, formData.password).then(() => {
             handleLoginData();
-            console.log("user has registered in successfully");
+            console.log("user has logged in");
 
         }).catch(error => {
             setLoginErr(true);
