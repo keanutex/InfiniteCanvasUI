@@ -59,7 +59,11 @@ const updateCanvas = async (e, colour, user, userData) => {
         let r = parseInt("0x" + colour.slice(1,3));
         let g = parseInt("0x" + colour.slice(3,5));
         let b = parseInt("0x" + colour.slice(5,7));
-        
+        drawUpdate(x, y, r, g, b);
+        disableClick();
+        setTimeout(function() {
+            enableClick();
+        }, 1000);
         await axios.put('http://52.151.114.80:3000/canvas/drawPixel',
         {
             x: y,
@@ -75,11 +79,7 @@ const updateCanvas = async (e, colour, user, userData) => {
                 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
             }
         }).then(response => {
-            drawUpdate(x, y, r, g, b);
-            disableClick();
-            setTimeout(function() {
-                enableClick();
-            }, 1000);
+            
         }).catch(error => {
             console.log(error);
         });
