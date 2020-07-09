@@ -9,7 +9,7 @@ function User(props) {
 
     const banUser = async (e) => {
         e.preventDefault();
-        await axios.post('http://127.0.0.1:3000/account/banUser',
+        await axios.post('http://52.151.114.80:3000/account/banUser',
             {
                 userId: props.name.userId,
                 adminId: props.admin
@@ -29,7 +29,7 @@ function User(props) {
 
     const unBanUser = async (e) => {
         e.preventDefault()
-        await axios.post('http://127.0.0.1:3000/account/unbanUser',
+        await axios.post('http://52.151.114.80:3000/account/unbanUser',
             {
                 userId: props.name.userId,
                 adminId: props.admin
@@ -49,7 +49,7 @@ function User(props) {
 
     const promoteUser = async (e) => {
         e.preventDefault();
-        await axios.post('http://127.0.0.1:3000/account/setUserAdmin',
+        await axios.post('http://52.151.114.80:3000/account/setUserAdmin',
             {
                 userId: props.name.userId,
                 adminId: props.admin
@@ -69,7 +69,7 @@ function User(props) {
 
     const demoteUser = async (e) => {
         e.preventDefault();
-        await axios.post('http://127.0.0.1:3000/account/removeUserAdmin',
+        await axios.post('http://52.151.114.80:3000/account/removeUserAdmin',
             {
                 userId: props.name.userId,
                 adminId: props.admin
