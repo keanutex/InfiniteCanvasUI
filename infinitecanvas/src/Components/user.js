@@ -6,7 +6,6 @@ import ConfirmLine from './confirmline';
 function User(props) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showState, setState] = useState("");
-    const [showErr, setshowErr] = useState(false);
 
     const banUser = async (e) => {
         e.preventDefault();
@@ -29,7 +28,7 @@ function User(props) {
     };
 
     const unBanUser = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         await axios.post('http://127.0.0.1:3000/account/unbanUser',
             {
                 userId: props.name.userId,

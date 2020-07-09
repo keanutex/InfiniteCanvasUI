@@ -1,19 +1,13 @@
 import React from 'react';
-import {PaletteArea, Colour} from './Styled-Components/styled-components';
+import {PaletteArea, ColourInput, ColourLabel} from './Styled-Components/styled-components';
 
-function Palette() {
+function Palette(props) {
     return (
         <PaletteArea>
-            <h3>Infinte Canvas</h3>
-            <Colour colour="white"/>
-            <Colour colour="black"/>
-            <Colour colour="grey"/>
-            <Colour colour="blue"/>
-            <Colour colour="red"/>
-            <Colour colour="yellow"/>
-            <Colour colour="orange"/>
-            <Colour colour="green"/>
-            <Colour colour="purple"/>
+            <h3>DotArt</h3>
+            <ColourLabel colour={props.colour}>
+                <ColourInput type="color" onChange={e => props.setColour(e.target.value)}/>
+            </ColourLabel>
         </PaletteArea>
     )
 }
