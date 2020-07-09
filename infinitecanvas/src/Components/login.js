@@ -34,7 +34,7 @@ function Login(props) {
     const collectUsernames = async () => {
         setuserTaken(false);
         setLoginErr(false);
-        await axios.post('http://127.0.0.1:3000/account/users',
+        await axios.post('http://51.132.134.222:3000/account/users',
             {
                 username: formData.username
             },
@@ -90,7 +90,7 @@ function Login(props) {
 
     const handleLoginData = async () => {
         // here is where you would login the user
-        await axios.post('http://127.0.0.1:3000/account/signin',
+        await axios.post('http://51.132.134.222:3000/account/signin',
             {
                 username: formData.username,
                 email: formData.email
@@ -111,7 +111,7 @@ function Login(props) {
     };
 
     const handleRegisterData = async () => {
-        await axios.post('http://127.0.0.1:3000/account/register',
+        await axios.post('http://51.132.134.222:3000/account/register',
             {
                 username: formData.username,
                 email: formData.email

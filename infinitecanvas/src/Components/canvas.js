@@ -4,7 +4,7 @@ import {CanvasArea, CanvasFrame} from './Styled-Components/styled-components';
 
 import openSocket from "socket.io-client";
 
-const socket = openSocket("ws://localhost:3030/");
+const socket = openSocket("ws://51.132.134.222:3030/");
 
 function draw(e, colour, user) {
     if (user === null) {
@@ -37,6 +37,7 @@ function enableClick() {
 }
 
 const getCanvas = async (setImageData) => {
+    console.log("fetching canvas");
     await axios.get('http://51.132.134.222:3000/canvas/boardState',
     {
         headers: {
@@ -167,7 +168,7 @@ function Canvas(props) {
         socket.on("newData", data => {
             console.log(data);
             drawUpdate(data.x, data.y, data.r, data.g, data.b);
-        });
+        }, []);
     });
     
     return (
