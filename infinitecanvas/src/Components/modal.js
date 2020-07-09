@@ -8,7 +8,7 @@ function Modal(props) {
         return (
             <LoginModal>
                 <h3>Welcome to DotArt</h3>
-                <Login setUser={props.setUser} />
+                <Login setUser={props.setUser} setUserData={props.setUserData}/>
                 <p>Only one click allowed per second</p>
                 <p>Created by some poor souls</p>
             </LoginModal>
