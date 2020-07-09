@@ -6,7 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 var firebaseConfig = {
- //enter config
+    //enter config
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -16,32 +16,72 @@ const auth = firebase.auth();
 
 function Login(props) {
     const [formData, setFormData] = useState({});
-    const [showErr, setshowErr] = useState(false);
+    const [registerErr, setregisterErr] = useState(false);
+    const [userTaken, setuserTaken] = useState(false);
+    const [internalErr, setinternalErr] = useState(false);
+    const [LoginErr, setLoginErr] = useState(false);
     const handleChange = (e) => {
+        setLoginErr(false);
+        setregisterErr(false);
+        setuserTaken(false);
+        setinternalErr(false);
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
 
+    const collectUsernames = async () => {
+        setuserTaken(false);
+        setLoginErr(false);
+        await axios.post('http://127.0.0.1:3000/account/users',
+            {
+                username: formData.username
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+                }
+            }
+        ).then(response => {
+            if(response.status === 200){
+                handleSubmitRegister();
+            }
+            else if(response.status === 204){
+                setuserTaken(true);
+            }
+            else{
+                console.log("user is taken");
+                setinternalErr(true);
+            }
+        }).catch(error => {
+            setinternalErr(true);
+            console.log(error)
+        });
 
-    const handleSubmitRegister = async (e) => {
+    }
+
+
+    const handleSubmitRegister = async () => {
         auth.createUserWithEmailAndPassword(formData.email, formData.password).then(() => {
             handleRegisterData();
             console.log("user has registered in successfully");
 
         }).catch(error => {
             console.log(error);
-            setshowErr(true);
+            setregisterErr(true);
         });
     }
     const handleSubmitLogin = async (e) => {
+        setuserTaken(false);
+        setLoginErr(false);
         auth.signInWithEmailAndPassword(formData.email, formData.password).then(() => {
             handleLoginData();
             console.log("user has registered in successfully");
 
         }).catch(error => {
-            setshowErr(true);
+            setLoginErr(true);
             console.log(error);
         });
     }
@@ -65,6 +105,7 @@ function Login(props) {
             props.setUser(formData.username);
             props.setUserData({ userId: response.data.userId, typeId: response.data.typeId, statusId: response.data.statusId })
         }).catch(error => {
+            setLoginErr(true);
             console.log(error)
         });
     };
@@ -96,11 +137,14 @@ function Login(props) {
             <Input type="text" name="username" onChange={handleChange} placeholder="Username" />
             <Input type="password" name="password" onChange={handleChange} placeholder="Password" />
             <Input type="email" name="email" onChange={handleChange} placeholder="Email" />
-            {showErr && <p>Could Not Log You in, Ensure Email, Username and Password is Correct</p>}
+            {userTaken && <p style={{textAlign: 'center', color:'red'}}>Username is taken, please enter a different one</p> }
+            {LoginErr && <p style={{textAlign: 'center', color:'red'}}>Incorrect Username/Password</p>}
+            {registerErr && <p style={{textAlign: 'center', color:'red'}}>Could Not Log You in, Ensure Email, Username and Password is Correct</p>}
+            {internalErr && <p style={{textAlign: 'center', color:'red'}}>Something went wrong, please try again later</p>}
             <Buttons>
                 <Button type="button" onClick={handleSubmitLogin}>Login</Button>
                 <p> or </p>
-                <Button type="button" onClick={handleSubmitRegister}>Register</Button>
+                <Button type="button" onClick={collectUsernames}>Register</Button>
             </Buttons>
         </Form>
     )
